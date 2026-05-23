@@ -74,7 +74,7 @@ export function ChatThread({ session, messages, isUploading, onUpload }: ChatThr
     // Active session — show profile + messages
     return (
         <div className="flex flex-1 flex-col overflow-y-auto">
-            <ProfileCard profile={session.profile} filename={session.filename} />
+            <ProfileCard profile={session.profile!} filename={session.filename} />
 
             {messages.map((message) => (
                 <MessageBubble key={message.id} message={message} />

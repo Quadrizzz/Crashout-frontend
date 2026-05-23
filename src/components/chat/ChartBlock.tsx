@@ -87,7 +87,7 @@ export function ChartBlock({ config }: { config: ChartConfig }) {
                             cx="50%"
                             cy="50%"
                             outerRadius={75}
-                            label={({ name, value }) => `${value}%`}
+                            label={({ value }) => `${value}%`}
                             labelLine={true}
                         >
                             {data.map((_, i) => (

@@ -36,7 +36,7 @@ export function useChat(session: Session | null) {
                 const stream = streamChat({
                     sessionId: session.id,
                     parquetPath: session.parquet_path,
-                    datasetProfile: session.profile,
+                    datasetProfile: session.profile!,
                     messages: [...messages, userMessage],
                     message: content,
                     token,
@@ -58,7 +58,7 @@ export function useChat(session: Session | null) {
                                     ? {
                                         ...m,
                                         content: event.message,
-                                        chart: event.chart_config as Message["chart_config"],
+                                        chart: event.chart_config as Message["chart"],
                                         isStreaming: false,
                                         node: undefined,
                                     }
