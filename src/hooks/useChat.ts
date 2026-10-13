@@ -4,6 +4,24 @@ import type { Message, Session } from "@/types/index"
 import { streamChat } from "@/lib/api"
 import { useAuth } from "@/context/AuthContext"
 
+function formatUserFriendlyError(rawError?: string): string {
+    if (!rawError) return "The analysis service is temporarily unavailable. Please try asking again."
+    const lower = rawError.toLowerCase()
+    if (lower.includes("503") || lower.includes("unavailable") || lower.includes("high demand") || lower.includes("overloaded")) {
+        return "Our AI analysis service is experiencing high demand right now. Please wait a moment and try asking your question again."
+    }
+    if (lower.includes("429") || lower.includes("rate limit") || lower.includes("quota")) {
+        return "We've reached a temporary capacity limit. Please wait a few seconds before trying again."
+    }
+    if (lower.includes("fetch") || lower.includes("network") || lower.includes("econnrefused")) {
+        return "Unable to connect to the server. Please check your connection and try again."
+    }
+    if (lower.includes("token") || lower.includes("auth") || lower.includes("401") || lower.includes("403")) {
+        return "Your session has expired. Please refresh the page or log in again."
+    }
+    return "We ran into an issue while analyzing the data. Please try again."
+}
+
 export function useChat(session: Session | null) {
     const [messages, setMessages] = useState<Message[]>([])
     const [isLoading, setIsLoading] = useState(false)
@@ -27,6 +45,7 @@ export function useChat(session: Session | null) {
                 role: "assistant",
                 content: "",
                 isStreaming: true,
+                isError: false,
             }
 
             setMessages((prev) => [...prev, userMessage, assistantMessage])
@@ -43,15 +62,19 @@ export function useChat(session: Session | null) {
                 })
 
                 for await (const event of stream) {
-                    if (event.type === "progress") {
+                    if (event.type === "status") {
+                        setMessages((prev) =>
+                            prev.map((m) =>
+                                m.id === assistantId ? { ...m, status: event.status, node: event.node ?? m.node } : m
+                            )
+                        )
+                    } else if (event.type === "progress") {
                         setMessages((prev) =>
                             prev.map((m) =>
                                 m.id === assistantId ? { ...m, node: event.node } : m
                             )
                         )
-                    }
-
-                    if (event.type === "response") {
+                    } else if (event.type === "response") {
                         setMessages((prev) =>
                             prev.map((m) =>
                                 m.id === assistantId
@@ -60,22 +83,41 @@ export function useChat(session: Session | null) {
                                         content: event.message,
                                         chart: event.chart_config as Message["chart"],
                                         isStreaming: false,
+                                        isError: false,
                                         node: undefined,
+                                        status: undefined,
+                                    }
+                                    : m
+                            )
+                        )
+                    } else if (event.type === "error") {
+                        setMessages((prev) =>
+                            prev.map((m) =>
+                                m.id === assistantId
+                                    ? {
+                                        ...m,
+                                        content: formatUserFriendlyError(event.message),
+                                        isStreaming: false,
+                                        isError: true,
+                                        node: undefined,
+                                        status: undefined,
                                     }
                                     : m
                             )
                         )
                     }
                 }
-            } catch {
+            } catch (err: any) {
                 setMessages((prev) =>
                     prev.map((m) =>
                         m.id === assistantId
                             ? {
                                 ...m,
-                                content: "Something went wrong. Please try again.",
+                                content: formatUserFriendlyError(err?.message),
                                 isStreaming: false,
+                                isError: true,
                                 node: undefined,
+                                status: undefined,
                             }
                             : m
                     )

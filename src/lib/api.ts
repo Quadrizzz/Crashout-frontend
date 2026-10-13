@@ -81,7 +81,9 @@ export async function fetchMessages(
 
 export type StreamEvent =
     | { type: "progress"; node: string }
+    | { type: "status"; status: string; node?: string }
     | { type: "response"; message: string; chart_config: unknown }
+    | { type: "error"; message: string }
 
 export async function* streamChat({
     sessionId,

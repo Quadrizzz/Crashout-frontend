@@ -87,7 +87,7 @@ export function ChartBlock({ config }: { config: ChartConfig }) {
                             cx="50%"
                             cy="50%"
                             outerRadius={75}
-                            label={({ value }) => `${value}%`}
+                            label={({ name, value }) => `${name}: ${value}`}
                             labelLine={true}
                         >
                             {data.map((_, i) => (
@@ -96,7 +96,7 @@ export function ChartBlock({ config }: { config: ChartConfig }) {
                         </Pie>
                         <Tooltip
                             {...tooltipStyle}
-                            formatter={(value, name) => [`${value}%`, name]}
+                            formatter={(value: any, name: any) => [value, name]}
                         />
                         <Legend
                             wrapperStyle={{ fontSize: "11px", color: "#9ca3af" }}

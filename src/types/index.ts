@@ -15,7 +15,10 @@ export interface Message {
     content: string
     chart?: ChartConfig
     isStreaming?: boolean
+    isError?: boolean
     node?: string
+    status?: string
+    created_at?: string
 }
 
 export interface ColumnProfile {
