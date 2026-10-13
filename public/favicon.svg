@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Rounded Indigo Background Square matching the sidebar logo -->
+  <rect width="32" height="32" rx="8" fill="#4f46e5" />
+  
+  <!-- Lucide Blocks icon paths centered on 32x32 -->
+  <g stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Top-left block -->
+    <rect x="7" y="7" width="7" height="7" rx="1.5" />
+    <!-- Bottom-left block -->
+    <rect x="7" y="18" width="7" height="7" rx="1.5" />
+    <!-- Top-right block -->
+    <rect x="18" y="7" width="7" height="7" rx="1.5" />
+    <!-- Bottom-right block (hollow accent style or matched) -->
+    <rect x="18" y="18" width="7" height="7" rx="1.5" />
+  </g>
+</svg>
