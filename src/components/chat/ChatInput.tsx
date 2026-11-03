@@ -40,7 +40,7 @@ export function ChatInput({ onSend, onUpload, isLoading, hasSession }: ChatInput
     const canSend = value.trim() && !isLoading && hasSession
 
     return (
-        <div className="border-t border-white/5 bg-[#0a0a0f] p-4">
+        <div className="border-t border-white/5 bg-[#0a0a0f] px-3 pt-2.5 pb-[max(0.625rem,env(safe-area-inset-bottom))] sm:p-4">
             <div
                 className={cn(
                     "flex items-end gap-2 rounded-2xl border bg-white/[0.03] p-2 transition-colors duration-200",
@@ -82,7 +82,7 @@ export function ChatInput({ onSend, onUpload, isLoading, hasSession }: ChatInput
                     }
                     disabled={!hasSession || isLoading}
                     rows={1}
-                    className="flex-1 resize-none bg-transparent py-1.5 text-sm text-white/80 placeholder-white/20 outline-none disabled:cursor-not-allowed"
+                    className="min-w-0 flex-1 resize-none bg-transparent py-1.5 text-base text-white/80 placeholder-white/20 outline-none disabled:cursor-not-allowed sm:text-sm"
                     style={{ maxHeight: "120px" }}
                 />
 
@@ -101,7 +101,7 @@ export function ChatInput({ onSend, onUpload, isLoading, hasSession }: ChatInput
                 </button>
             </div>
 
-            <p className="mt-2 text-center font-mono text-[10px] text-white/15">
+            <p className="mt-1.5 text-center font-mono text-[10px] text-white/15 sm:mt-2">
                 CSV · TSV · Excel · JSON · JSONL · Parquet
             </p>
         </div>

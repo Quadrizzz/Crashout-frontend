@@ -39,72 +39,74 @@ export function ChartBlock({ config }: { config: ChartConfig }) {
     const { title, data, color = "#6366f1" } = config
 
     return (
-        <div className="mt-3 rounded-xl border border-white/5 bg-white/[0.02] p-4">
+        <div className="mt-3 w-full min-w-0 overflow-hidden rounded-xl border border-white/5 bg-white/[0.02] p-2.5 sm:p-4">
             {title && (
-                <p className="mb-3 text-xs font-mono uppercase tracking-widest text-white/30">
+                <p className="mb-3 break-words font-mono text-xs uppercase tracking-widest text-white/30">
                     {title}
                 </p>
             )}
-            <ResponsiveContainer width="100%" height={220}>
-                {type === "bar" ? (
-                    <BarChart {...commonProps(data)}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
-                        <XAxis dataKey={xKey} {...axisProps} />
-                        <YAxis {...axisProps} />
-                        <Tooltip {...tooltipStyle} />
-                        <Bar dataKey={yKey} fill={color} radius={[4, 4, 0, 0]} />
-                    </BarChart>
-                ) : type === "line" ? (
-                    <LineChart {...commonProps(data)}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
-                        <XAxis dataKey={xKey} {...axisProps} />
-                        <YAxis {...axisProps} />
-                        <Tooltip {...tooltipStyle} />
-                        <Line type="monotone" dataKey={yKey} stroke={color} strokeWidth={2} dot={false} />
-                    </LineChart>
-                ) : type === "area" ? (
-                    <AreaChart {...commonProps(data)}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
-                        <XAxis dataKey={xKey} {...axisProps} />
-                        <YAxis {...axisProps} />
-                        <Tooltip {...tooltipStyle} />
-                        <Area type="monotone" dataKey={yKey} stroke={color} fill={`${color}20`} strokeWidth={2} />
-                    </AreaChart>
-                ) : type === "scatter" ? (
-                    <ScatterChart {...commonProps(data)}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" />
-                        <XAxis dataKey={xKey} {...axisProps} />
-                        <YAxis dataKey={yKey} {...axisProps} />
-                        <Tooltip {...tooltipStyle} />
-                        <Scatter data={data} fill={color} />
-                    </ScatterChart>
-                ) : (
-                    <PieChart>
-                        <Pie
-                            data={data}
-                            dataKey={yKey}
-                            nameKey={xKey}
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={75}
-                            label={({ name, value }) => `${name}: ${value}`}
-                            labelLine={true}
-                        >
-                            {data.map((_, i) => (
-                                <Cell key={i} fill={COLORS[i % COLORS.length]} />
-                            ))}
-                        </Pie>
-                        <Tooltip
-                            {...tooltipStyle}
-                            formatter={(value: any, name: any) => [value, name]}
-                        />
-                        <Legend
-                            wrapperStyle={{ fontSize: "11px", color: "#9ca3af" }}
-                            formatter={(value) => data.find((d: any) => d[xKey] === value)?.[xKey] ?? value}
-                        />
-                    </PieChart>
-                )}
-            </ResponsiveContainer>
+            <div className="h-[200px] w-full sm:h-[220px]">
+                <ResponsiveContainer width="100%" height="100%">
+                    {type === "bar" ? (
+                        <BarChart {...commonProps(data)}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
+                            <XAxis dataKey={xKey} {...axisProps} />
+                            <YAxis width={40} {...axisProps} />
+                            <Tooltip {...tooltipStyle} />
+                            <Bar dataKey={yKey} fill={color} radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                    ) : type === "line" ? (
+                        <LineChart {...commonProps(data)}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
+                            <XAxis dataKey={xKey} {...axisProps} />
+                            <YAxis width={40} {...axisProps} />
+                            <Tooltip {...tooltipStyle} />
+                            <Line type="monotone" dataKey={yKey} stroke={color} strokeWidth={2} dot={false} />
+                        </LineChart>
+                    ) : type === "area" ? (
+                        <AreaChart {...commonProps(data)}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
+                            <XAxis dataKey={xKey} {...axisProps} />
+                            <YAxis width={40} {...axisProps} />
+                            <Tooltip {...tooltipStyle} />
+                            <Area type="monotone" dataKey={yKey} stroke={color} fill={`${color}20`} strokeWidth={2} />
+                        </AreaChart>
+                    ) : type === "scatter" ? (
+                        <ScatterChart {...commonProps(data)}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" />
+                            <XAxis dataKey={xKey} {...axisProps} />
+                            <YAxis width={40} dataKey={yKey} {...axisProps} />
+                            <Tooltip {...tooltipStyle} />
+                            <Scatter data={data} fill={color} />
+                        </ScatterChart>
+                    ) : (
+                        <PieChart>
+                            <Pie
+                                data={data}
+                                dataKey={yKey}
+                                nameKey={xKey}
+                                cx="50%"
+                                cy="50%"
+                                outerRadius={65}
+                                label={({ name, value }) => `${name}: ${value}`}
+                                labelLine={true}
+                            >
+                                {data.map((_, i) => (
+                                    <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                                ))}
+                            </Pie>
+                            <Tooltip
+                                {...tooltipStyle}
+                                formatter={(value: any, name: any) => [value, name]}
+                            />
+                            <Legend
+                                wrapperStyle={{ fontSize: "11px", color: "#9ca3af" }}
+                                formatter={(value) => data.find((d: any) => d[xKey] === value)?.[xKey] ?? value}
+                            />
+                        </PieChart>
+                    )}
+                </ResponsiveContainer>
+            </div>
         </div>
     )
 }

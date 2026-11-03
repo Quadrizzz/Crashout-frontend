@@ -40,11 +40,11 @@ export function MessageBubble({ message }: { message: Message }) {
     const textContent = normalizeContent(message.content)
 
     return (
-        <div className={cn("flex w-full gap-3 px-4 py-3", isUser ? "justify-end" : "justify-start")}>
+        <div className={cn("flex w-full gap-2 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3", isUser ? "justify-end" : "justify-start")}>
             {/* Agent avatar */}
             {!isUser && (
                 <div className={cn(
-                    "mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ring-1",
+                    "mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg ring-1 sm:h-7 sm:w-7",
                     message.isError
                         ? "bg-rose-500/10 ring-rose-500/20 text-rose-400"
                         : "bg-indigo-500/10 ring-indigo-500/20 text-indigo-400"
@@ -53,16 +53,22 @@ export function MessageBubble({ message }: { message: Message }) {
                 </div>
             )}
 
-            <div className={cn("max-w-[75%]", isUser ? "items-end" : "items-start")}>
+            <div
+                className={cn(
+                    "min-w-0 max-w-[85%] sm:max-w-[75%]",
+                    message.chart && "w-full",
+                    isUser ? "items-end" : "items-start"
+                )}
+            >
                 {isUser ? (
                     // User bubble
-                    <div className="rounded-2xl rounded-tr-sm bg-indigo-600 px-4 py-2.5 text-sm text-white">
+                    <div className="rounded-2xl rounded-tr-sm bg-indigo-600 px-3.5 py-2 text-sm break-words text-white sm:px-4 sm:py-2.5">
                         {textContent}
                     </div>
                 ) : (
                     // Assistant bubble
                     <div className={cn(
-                        "rounded-2xl rounded-tl-sm px-4 py-3 ring-1",
+                        "rounded-2xl rounded-tl-sm px-3.5 py-2.5 ring-1 sm:px-4 sm:py-3",
                         message.isError
                             ? "bg-rose-950/20 ring-rose-500/20 text-rose-200"
                             : "bg-white/[0.04] ring-white/5 text-white/80"
@@ -71,11 +77,11 @@ export function MessageBubble({ message }: { message: Message }) {
                         {/* Live progress status */}
                         {message.isStreaming && (
                             <div className="mb-2 flex items-center gap-2 text-xs text-indigo-400">
-                                <span className="relative flex h-2 w-2">
+                                <span className="relative flex h-2 w-2 shrink-0">
                                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75"></span>
                                     <span className="relative inline-flex h-2 w-2 rounded-full bg-indigo-500"></span>
                                 </span>
-                                <span className="font-mono text-xs text-indigo-300/90">
+                                <span className="truncate font-mono text-xs text-indigo-300/90">
                                     {message.status || (message.node && NODE_LABELS[message.node]?.label) || "Analyzing data..."}
                                 </span>
                             </div>
@@ -83,7 +89,7 @@ export function MessageBubble({ message }: { message: Message }) {
 
                         {/* Message text */}
                         {textContent && (
-                            <p className={cn("text-sm leading-relaxed whitespace-pre-wrap", message.isError && "text-rose-300/90")}>
+                            <p className={cn("text-sm leading-relaxed whitespace-pre-wrap break-words", message.isError && "text-rose-300/90")}>
                                 {textContent}
                             </p>
                         )}
@@ -96,7 +102,7 @@ export function MessageBubble({ message }: { message: Message }) {
 
             {/* User avatar */}
             {isUser && (
-                <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/5 ring-1 ring-white/10">
+                <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-white/5 ring-1 ring-white/10 sm:h-7 sm:w-7">
                     <span className="text-xs font-medium text-white/60">U</span>
                 </div>
             )}

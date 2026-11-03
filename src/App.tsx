@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { LogOut } from "lucide-react"
+import { LogOut, Menu, Download } from "lucide-react"
 import type { Session } from "@/types/index"
 import { uploadFile, fetchSessions, fetchSessionProfile, fetchMessages } from "@/lib/api"
 import { useChat } from "@/hooks/useChat"
@@ -19,6 +19,7 @@ export default function App() {
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [hasMoreSessions, setHasMoreSessions] = useState(true)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const { user, logout, token } = useAuth()
   const navigate = useNavigate()
 
@@ -165,7 +166,7 @@ export default function App() {
 
   if (isLoadingSessions) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center bg-[#0a0a0f]">
+      <div className="flex h-dvh w-full items-center justify-center bg-[#0a0a0f]">
         <div className="text-center space-y-3">
           <div className="h-8 w-8 mx-auto animate-spin rounded-full border-2 border-white/10 border-t-white/60"></div>
           <p className="font-mono text-sm text-white/50">Loading sessions...</p>
@@ -175,7 +176,7 @@ export default function App() {
   }
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#0a0a0f] text-white">
+    <div className="flex h-dvh w-full overflow-hidden bg-[#0a0a0f] text-white">
       <Sidebar
         sessions={sessions}
         activeSessionId={activeSession?.id ?? null}
@@ -184,34 +185,46 @@ export default function App() {
         onLoadMore={loadMoreSessions}
         hasMore={hasMoreSessions}
         isLoadingMore={isLoadingMore}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
       />
 
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
         {/* Top bar */}
-        <header className="flex h-12 items-center justify-between border-b border-white/5 px-5">
-          <div className="flex items-center gap-3">
-            <p className="font-mono text-xs text-white/50">
+        <header className="flex h-12 shrink-0 items-center justify-between gap-2 border-b border-white/5 px-3 sm:px-5">
+          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+            <button
+              onClick={() => setIsSidebarOpen(true)}
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/5 bg-white/[0.03] text-white/60 transition-colors hover:border-white/10 hover:bg-white/[0.05] hover:text-white md:hidden"
+              aria-label="Open menu"
+            >
+              <Menu size={16} />
+            </button>
+            <p className="hidden truncate font-mono text-xs text-white/50 sm:block">
               {user?.email}
             </p>
             <button
               onClick={handleLogout}
-              className="flex items-center gap-1.5 rounded-lg border border-white/5 bg-white/[0.03] px-2.5 py-1.5 font-mono text-xs text-white/40 transition-colors hover:border-white/10 hover:bg-white/[0.05] hover:text-white/60"
+              className="flex shrink-0 items-center gap-1.5 rounded-lg border border-white/5 bg-white/[0.03] px-2.5 py-1.5 font-mono text-xs text-white/40 transition-colors hover:border-white/10 hover:bg-white/[0.05] hover:text-white/60"
               title="Sign out"
             >
               <LogOut size={12} />
-              <span>Sign out</span>
+              <span className="hidden xs:inline sm:inline">Sign out</span>
             </button>
           </div>
-          <div className="flex items-center gap-3">
-            <p className="font-mono text-xs text-white/30">
+          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+            <p className="truncate font-mono text-xs text-white/30">
               {activeSession ? activeSession.filename : "No dataset loaded"}
             </p>
             {activeSession && (
               <button
-                  onClick={handleDownloadReport}
-                  className="rounded-lg border border-white/5 bg-white/[0.03] px-3 py-1.5 font-mono text-xs text-white/30 transition-colors hover:border-white/10 hover:text-white/50"
+                onClick={handleDownloadReport}
+                className="flex shrink-0 items-center gap-1.5 rounded-lg border border-white/5 bg-white/[0.03] px-2.5 py-1.5 font-mono text-xs text-white/30 transition-colors hover:border-white/10 hover:text-white/50 sm:px-3"
+                title="Download report"
               >
-                  Download report
+                <Download size={12} className="sm:hidden" />
+                <span className="hidden sm:inline">Download report</span>
+                <span className="sm:hidden">Report</span>
               </button>
             )}
           </div>

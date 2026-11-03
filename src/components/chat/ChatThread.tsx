@@ -27,7 +27,7 @@ export function ChatThread({ session, messages, isUploading, onUpload }: ChatThr
     // Uploading state
     if (isUploading) {
         return (
-            <div className="flex flex-1 flex-col items-center justify-center gap-3">
+            <div className="flex flex-1 flex-col items-center justify-center gap-3 p-4">
                 <div className="h-8 w-8 animate-spin rounded-full border-2 border-indigo-500/20 border-t-indigo-500" />
                 <p className="text-xs text-white/30">Uploading and profiling dataset...</p>
             </div>
@@ -38,11 +38,11 @@ export function ChatThread({ session, messages, isUploading, onUpload }: ChatThr
     if (!session) {
         return (
             <div
-                className="flex flex-1 flex-col items-center justify-center gap-6 p-8"
+                className="flex flex-1 flex-col items-center justify-center gap-5 p-4 sm:gap-6 sm:p-8"
                 onDrop={handleDrop}
                 onDragOver={(e) => e.preventDefault()}
             >
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/5 bg-white/[0.02]">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/5 bg-white/[0.02] sm:h-16 sm:w-16">
                     <BarChart2 size={24} className="text-white/20" />
                 </div>
 
@@ -54,7 +54,7 @@ export function ChatThread({ session, messages, isUploading, onUpload }: ChatThr
                 </div>
 
                 {/* Drop zone */}
-                <label className="flex cursor-pointer flex-col items-center gap-2 rounded-2xl border border-dashed border-white/10 px-12 py-8 transition-colors hover:border-indigo-500/30 hover:bg-indigo-500/[0.02]">
+                <label className="flex w-full max-w-xs cursor-pointer flex-col items-center gap-2 rounded-2xl border border-dashed border-white/10 px-6 py-7 text-center transition-colors hover:border-indigo-500/30 hover:bg-indigo-500/[0.02] sm:w-auto sm:max-w-none sm:px-12 sm:py-8">
                     <Upload size={16} className="text-white/20" />
                     <span className="text-xs text-white/20">Drop a file here or click to browse</span>
                     <input
@@ -73,7 +73,7 @@ export function ChatThread({ session, messages, isUploading, onUpload }: ChatThr
 
     // Active session — show profile + messages
     return (
-        <div className="flex flex-1 flex-col overflow-y-auto">
+        <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
             <ProfileCard profile={session.profile!} filename={session.filename} />
 
             {messages.map((message) => (

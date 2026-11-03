@@ -42,18 +42,18 @@ export default function Login() {
   };
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center bg-[#0a0a0f]">
-      <div className="w-full max-w-md space-y-8 px-6">
+    <div className="flex min-h-dvh w-full items-center justify-center bg-[#0a0a0f] py-8">
+      <div className="w-full max-w-md space-y-6 px-4 sm:space-y-8 sm:px-6">
         {/* Logo/Title */}
         <div className="text-center">
-          <h1 className="font-mono text-3xl font-bold text-white">Crashout</h1>
+          <h1 className="font-mono text-2xl font-bold text-white sm:text-3xl">Crashout</h1>
           <p className="mt-2 font-mono text-sm text-white/50">
             Sign in to continue
           </p>
         </div>
 
         {/* Form */}
-        <div className="rounded-xl border border-white/10 bg-white/[0.02] p-8">
+        <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5 sm:p-8">
           {step === 'email' ? (
             <form onSubmit={handleEmailSubmit} className="space-y-6">
               <div>
@@ -69,7 +69,7 @@ export default function Login() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="mt-2 w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 font-mono text-sm text-white placeholder-white/30 outline-none transition-colors focus:border-white/20 focus:bg-white/[0.05]"
+                  className="mt-2 w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 font-mono text-base text-white placeholder-white/30 outline-none transition-colors focus:border-white/20 focus:bg-white/[0.05] sm:text-sm"
                   placeholder="you@example.com"
                 />
               </div>
@@ -104,7 +104,7 @@ export default function Login() {
                   required
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
-                  className="mt-2 w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 font-mono text-sm text-white placeholder-white/30 outline-none transition-colors focus:border-white/20 focus:bg-white/[0.05]"
+                  className="mt-2 w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 font-mono text-base text-white placeholder-white/30 outline-none transition-colors focus:border-white/20 focus:bg-white/[0.05] sm:text-sm"
                   placeholder="000000"
                   maxLength={8}
                 />
